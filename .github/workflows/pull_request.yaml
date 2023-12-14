@@ -1,0 +1,51 @@
+name: "IaC Scan"
+
+on:
+    push:
+      branches:
+        - main
+        - feat/checkov-scan
+    pull_request:
+      types:
+        - opened
+        - edited
+        - reopened
+        - synchronize
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write # Required to comment with the plan output on PRs
+
+jobs:
+  generate_plan_output:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Generate module and provider bindings
+        run: npx cdktf-cli get
+
+      - name: Generate Terraform Plan Output
+        uses: hashicorp/terraform-cdk-action@v0.1.0
+        with:
+          workingDirectory: ./
+          terraformVersion: 1.5.2
+          cdktfVersion: 0.16.1
+          mode: plan-only
+          stackName: sample
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Scan IAC with Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: cdktf.out
+          framework: terraform
