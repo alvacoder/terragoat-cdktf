@@ -51,7 +51,7 @@ class MyStack extends TerraformStack {
           specialGroup: "allAuthenticatedUsers",
         },
       ],
-      datasetId: "terragoat_${" + variables.environment + "}_dataset",
+      datasetId: "terragoat_" + variables.environment + "_dataset",
       labels: {
         git_commit: "2bdc0871a5f4505be58244029cc6485d45d7bb8e",
         git_file: "terraform__gcp__big_data_tf",
@@ -65,7 +65,7 @@ class MyStack extends TerraformStack {
     });
     new SqlDatabaseInstance(this, "master_instance", {
       databaseVersion: "POSTGRES_11",
-      name: "terragoat-${" + variables.environment + "}-master",
+      name: "terragoat-" + variables.environment + "-master",
       region: variables.region,
       settings:
         {
