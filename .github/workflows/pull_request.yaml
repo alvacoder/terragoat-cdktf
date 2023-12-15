@@ -35,12 +35,12 @@ jobs:
         run: npx cdktf-cli get
 
       - name: Generate Terraform Plan Output
-        uses: hashicorp/terraform-cdk-action@v0.1.0
+        uses: hashicorp/terraform-cdk-action@v1.0.1
         with:
           workingDirectory: ./
           terraformVersion: 1.5.2
           cdktfVersion: 0.16.1
-          mode: plan-only
+          mode: synth-only
           stackName: sample
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
@@ -48,4 +48,4 @@ jobs:
         uses: bridgecrewio/checkov-action@master
         with:
           directory: cdktf.out
-          framework: terraform
+          framework: terraform_json
