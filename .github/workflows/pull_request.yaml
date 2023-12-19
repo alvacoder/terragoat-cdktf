@@ -40,11 +40,11 @@ jobs:
           workingDirectory: ./
           terraformVersion: 1.5.2
           cdktfVersion: 0.16.1
-          mode: synth-only
-          stackName: sample
+          mode: synth-only # can be replaced with plan-only
+          stackName: ${{ vars.TF_STACK_NAME }} # referenced from github repo variables
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Scan IAC with 
+      - name: Scan IAC with Checkov
         id: checkov
         uses: bridgecrewio/checkov-action@master
         with:
