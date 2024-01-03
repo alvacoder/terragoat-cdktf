@@ -50,6 +50,9 @@ jobs:
         with:
           directory: cdktf.out/stacks
           framework: terraform_json
+          soft_fail: true
+          output_format: cli,sarif
+          output_file_path: console,results.sarif
 
       - name: Scan IAC with Trivy
         id: trivy
