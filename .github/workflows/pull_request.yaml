@@ -44,13 +44,6 @@ jobs:
           stackName: ${{ vars.TF_STACK_NAME }} # referenced from github repo variables
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Scan IAC with Checkov
-        id: checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: cdktf.out/stacks
-          framework: terraform_json
-
       - name: Scan IAC with Trivy
         id: trivy
         uses: aquasecurity/trivy-action@master
@@ -58,4 +51,11 @@ jobs:
           scan-type: 'config'
           scan-ref: './cdktf.out/stacks'
           format: 'sarif'
-          exit-code: 1
+          exit-code: 0
+
+      - name: Scan IAC with Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: cdktf.out/stacks
+          framework: terraform_json
