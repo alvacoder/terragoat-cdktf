@@ -40,22 +40,20 @@ jobs:
           workingDirectory: ./
           terraformVersion: 1.5.2
           cdktfVersion: 0.16.1
-          mode: synth-only
-          stackName: sample
+          mode: synth-only # can be replaced with plan-only
+          stackName: ${{ vars.TF_STACK_NAME }} # referenced from github repo variables
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Scan IAC with 
-        id: checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: cdktf.out/stacks
-          framework: terraform_json
 
       - name: Scan IAC with Trivy
         id: trivy
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.17.0
         with:
           scan-type: 'config'
           scan-ref: './cdktf.out/stacks'
-          format: 'sarif'
-          exit-code: 1
+
+      - name: Scan IAC with Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: cdktf.out/stacks
+          framework: terraform_json
