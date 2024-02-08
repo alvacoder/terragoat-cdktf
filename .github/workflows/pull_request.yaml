@@ -44,14 +44,22 @@ jobs:
           stackName: ${{ vars.TF_STACK_NAME }} # referenced from github repo variables
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      # - name: Scan IAC with Trivy
+      #   id: trivy
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     scan-type: 'config'
+      #     scan-ref: './cdktf.out/stacks/sample'
+      #     format: 'sarif'
+      #     exit-code: 0
+
       - name: Scan IAC with Trivy
         id: trivy
         uses: aquasecurity/trivy-action@master
+
         with:
           scan-type: 'config'
           scan-ref: './cdktf.out/stacks'
-          format: 'sarif'
-          exit-code: 0
 
       - name: Scan IAC with Checkov
         id: checkov
