@@ -58,9 +58,7 @@ jobs:
           directory: cdktf.out/stacks
           framework: terraform_json
   slack-notify:
-    runs-on: self-hosted
-    steps:
-      - name: Security Team Vuln Alert
-        uses: YAtechnologies/cross-github-actions/.github/workflows/oss-scan.yaml@main
-        with:
-          secrets: inherit
+    name: Security Team Vuln Alert
+    uses: YAtechnologies/cross-github-actions/.github/workflows/oss-scan.yaml@iac
+    with:
+      secrets: inherit
